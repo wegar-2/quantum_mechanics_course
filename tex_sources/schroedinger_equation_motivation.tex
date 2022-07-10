@@ -1,0 +1,598 @@
+\documentclass[12pt]{article}
+
+%\usepackage[polish]{babel}
+\usepackage[utf8]{inputenc}
+%\usepackage{polski}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[hyphens]{url}
+\usepackage{hyperref}  
+
+% opening quote 
+\usepackage{epigraph}
+\setlength\epigraphwidth{8cm}
+\setlength\epigraphrule{0pt}
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\epigraph}{\@epitext{#1}}{\itshape\@epitext{#1}}{}{}
+\makeatother
+
+% arrows definitions
+\makeatletter
+\newcommand\xleftrightarrow[2][]{%
+  \ext@arrow 9999{\longleftrightarrowfill@}{#1}{#2}}
+\newcommand\longleftrightarrowfill@{%
+  \arrowfill@\leftarrow\relbar\rightarrow}
+\makeatother
+
+\begin{document}
+
+\title{Memo: Where Does Schrodinger Equation Come From?}
+\author{Artur Wegrzyn\footnote{Email: awegrzyn17@gmail.com}}
+\date{Last edited: 10.07.2022}
+\maketitle
+
+\epigraph{A very great deal more truth can become known than can be proven.}{--- \textup{Richard Feynman}, Nobel Lecture \textup{\cite{feynman_nobel_lecture_1965}}}
+
+\abstract{This memo is a subjective rephrasing of the reasoning presented in the video \href{https://www.youtube.com/watch?v=2WPA1L9uJqo&t=4007s&ab_channel=PhysicsExplained}{\textit{What is the Schrödinger Equation?}}\footnote{Cf. \cite{what_is_the_se} in the bibliography for link. } by YouTube channel \href{https://www.youtube.com/c/PhysicsExplainedVideos}{\textit{Physics Explained}}. 
+\\ \indent Please note that this text has been writen primarily for author's use - it is not addressed to wider audience. I just want to have the gist of the video's argument written down and readily available when I feel the urge to review the topic. 
+\\ \indent Hence, I have made this memo relatively self-contained. I have also done my best to make it readable - it is up to the reader to decide whether I succeeded at that, although I stress that I deliberately skipped
+historical details and some background information to keep the length of this text limited. }
+
+\newpage
+
+\tableofcontents
+
+\section{Introduction}
+\subsection{General remarks to the reader}
+As explained in the abstract, this memo is primarily for author's use. It contains presentation - inspired by and based on the great lecture \textit{What is the Schrodinger Equation? A Basic Introduction to Quantum Mechanics} 
+\cite{what_is_the_se} - of the motivation for Schrodinger equation. 
+\\ \indent There's a number of disclaimers that one must make when approaching such an important subject - for it is fair to say that all that one does in QM revolves - in the end - around the 
+Schrodinger Equation\footnote{From now on I will abbrieviate Schrodinger Equation as SE.}.
+\\ \indent Firstly: I am not a physicist by training. Even worse - it is fair to say that I have written this memo down to understand the topic better and have a vehicle for reminding my future self of the origin of SE. 
+\\ \indent Secondly, I want to stress that the reasoning presented here is not how Schrodinger arrived at his equation. It is more important to me to present a set of facts and relations that would allow the reader to develop
+a mental model approaching the SE.
+\\ \indent There are two reasons that made me write this memo.
+\\ \indent The first is that I prefer to think 'formally': by 'formally' I mean 'like in formal logic'. That is: I like to have a list of axioms tostart with and I like to have at least \textit{some} motivation for using taking such and such axiom. Also, I am still trying to come to terms with the fact 
+that you sometimes outright \textit{postulate} things in physics.  
+\\\indent The second reason why I think this topic is worth describing is that I am simply not satisfied with the approach taken in the 
+classical introduction to QM by Griffiths \cite{qm_handbook_griffiths}\footnote{Just to make it clear: I find the book absolutely excellent in all other respects. }
+where the SE is given to the reader right on the first page without explaining where it comes from. For comparison, I think that Miller \cite{qm_handbook_miller} does a much, \textit{much} better job
+explaining where the idea behind SE comes from but I still had not been satisfied with his exposition. I kept searching until I came across the lecture by 
+\textit{Physics Explained} \cite{what_is_the_se}. While working through the lecture I decided to write down the reasoning presented therein in order to make sure I could explain it to someone else. Overall, I just was not 
+comfortable having this equation at the center of QM and feeling that I do 
+not quite have the gut feeling for why somebody would take this specific partial differential equation as an axiom.
+\\ \indent Last but not least, I ask the reader for understanding: this text has been produced by a person that is new to quantum mechanics and does not have a university degree in physics. I am just an autodidact trying to come to start \textit{doing} QM - for as Feynman famously remarked \textit{Nobody understands quantum mechanics}\footnote{https://youtu.be/5tvzmuUPpNw}.
+\\ \indent If you happen to read this and have any remarks about the substance of this memo - please feel free to reach out to me via email. I welcome comments and criticism.
+
+\subsection{Outline}
+Memo opens with a list of the useful definitions and relations in section 2. Then I list the postulates we will be wroking with later on in section 3. Section 4 puts together some of the facts from preceding sections and comes up with an equation that the wave functions to match. Section 5 is a brief aside that contains some 
+simple mathematics will be needed later on. 
+\\ \indent Taken together, sections 2 to 5 set the stage for what happens next in sections 6 and 7. 
+\\ \indent Section 6 considers the simplest possible case that needs to be handled by the particle's wave equation and comes up with such an equation - Schrodinger equation - that is consisted with the postulates. Section 7 explains the crucial step
+of generalizing to other cases by simply \textit{postulating} that things 
+work according to this particular equation. This might look like a minor
+step but I really think it should be described separately.
+\\ \indent Section 8 concludes by listing of some general observations
+ concerning how the physics works and how it differs from more 'formal' approach of logic and mathematics. Those are just things that I consider important for myself.
+
+\section{Stating the obvious}
+This section contains a list of definitions and relations that are assumed to be obvious to the reader - I have to start somewhere so I just take them for granted without explaining at length where they come from.
+\\ \indent Importantly, one spatial dimension is considered thorughout this memo - it is denoted by $x$. Please take notice of the fact that there will 
+be a few more simplifying assumptions made down the line - this is done 
+to make sure that we do not have too many parameters varying freely when 
+we arrive to the point where we actually need to conjure up a new wave equation.
+\subsection{Hamiltonian}
+Total energy of a particle is:
+\begin{equation}\label{total_energy}
+E = T + V
+\end{equation}
+with $T$ standing for kinetic energy and $V$ - potential energy. In classical mechanics the total energy is denoted $H$.
+
+\subsection{Kinetic energy}
+Kinetic energy is:
+\begin{equation}\label{kinetic_energy}
+T = \frac{1}{2}mv^2 = \frac{p^2}{2m}
+\end{equation}
+
+\subsection{Potential}
+Potential is, in general, allowed to be a function of both time an position:
+\begin{equation}
+V = V(x, t)
+\end{equation}
+
+For conservative fields force if gradient of energy:
+\begin{equation}\label{force_grad_potential}
+F = - \nabla V
+\end{equation}
+
+Note that in a latter section potential will be assumed to be constant.
+This will be done since this will greatly simplify the reasoning - you
+start with simple case and only afterwards attack more complex problems.
+
+Importantly, notice that plugging \eqref{kinetic_energy} into \eqref{total_energy}, yields:
+\begin{equation}\label{total_energy_qm}
+E = \frac{p^2}{2m} + V
+\end{equation}
+
+\subsection{Other formulae}
+Keep in mind the following formulae:
+\item[1. ] Angular frequency:
+\begin{equation}
+\omega = \frac{2 \pi}{T} = 2 \pi f
+\end{equation}
+\item[2. ] Reduced Planck constant:
+\begin{equation}
+\hbar = \frac{h}{2\pi}
+\end{equation}
+\item[3. ] Wave number:
+\begin{equation}
+k = \frac{2\pi}{\lambda}
+\end{equation}
+
+
+\section{Postulates}
+\label{postulates}
+The following postulates will be needed in order to come up with a wave equation for a particle. There is a story behind each one of them and the reader is encouraged to investiagte them. Here, I just flat out list them without providing any context.
+
+\subsection{De Broglie's equation}
+De Broglie's equation relates particle's wavelength and momentum:
+\begin{equation}\label{debroglie_equation}
+\lambda = \frac{h}{p}
+\end{equation}
+
+\subsection{Planck relation}
+Planck relation postits that photon's energy is proportional to its frequency:
+\begin{equation}\label{planck_relation}
+E = hf = \hbar \omega
+\end{equation}
+
+\subsection{Linearity of wave equation}
+The wave equation needs to be linear in wave function $\Psi(x, t)$, so that if $\Psi_1(x, t)$ and $\Psi_2(x,t)$ are distinct solutions of the wave equation then the linear combination (with complex coefficients) of these two functions is also a solution of the wave equation:
+\begin{equation}
+c_1 \Psi_1(x,t) + c_2 \Psi_2(x, t)
+\end{equation}
+Broadly speaking, this postulate is motivated by the linearity of the classical wave equation. 
+This will be explained in more detail in section 5.
+
+\subsection{Solution for constant potential}
+For a constant potential (which implies that there is no force acting on a particle - cf. equation \eqref{force_grad_potential} above) the solutions of the wave equation should be traveling waves - once again, by analogy to the classical case. 
+
+\subsection{Postulates 1-4: comments}
+Postulate 4. given above requires further consideration. For why does it make sense to posit that for a constant potential the solution of the wave equation should be classical traveling waves? 
+\\ \indent Constant potential implies zero force. This in turn entails constant momentum. 
+But if the momentum is constant then, by de Broglie's equation, the wavelength of a particle is also fixed. Moreover, the velocity is also constant in such case. We know that velocity of wave is given by:
+\begin{equation}
+v = \lambda f = \frac{\lambda}{2 \pi} (2 \pi f) = k \omega
+\end{equation}
+Constant $lambda$ implies constant $k$. Since $v$ is also fixed, then $\omega$ remains fixed as well. 
+\\ \indent These conditions match neatly the classical traveling wave equation that describes a wave of constant length and frequency - cf. section 5.
+
+\section{Energy equation}
+Retrieving $p$ from \eqref{debroglie_equation} and squaring both sides yields:
+\begin{equation*}
+p^2 = \frac{h^2}{\lambda^2}
+\end{equation*}
+
+Plugging this and \eqref{planck_relation} into \eqref{total_energy_qm} the following formula is obtained:
+\begin{equation}\label{energy_eqn_transform1}
+hf = \frac{h^2}{2m\lambda^2} + V
+\end{equation}
+Rewriting LHS:
+$$ hf = \frac{h}{2\pi} 2\pi f = \hbar \omega $$
+Rewriting fraction from RHS:
+$$ 
+\frac{h^2}{2m\lambda^2} = 
+\frac{1}{2m} \frac{h^2}{(2 \pi)^2} \frac{(2 \pi)^2}{\lambda^2} =
+\frac{\hbar^2 k^2}{2m}
+$$
+Substitution into \eqref{energy_eqn_transform1} yields:
+\begin{equation}
+\label{energy_eqtn_qm}
+\hbar \omega = \frac{\hbar^2 k^2}{2m} + V
+\end{equation}
+This equation will play important role in section 6, where the motivation 
+for postulating a specific wave function is discussed. Suffice it to 
+say here that this equation encapsulates the postulates 1 and 2: 
+de Broglie's equation and Planck's relation.
+
+\section{Interlude: harmonic wave equation}
+In this section I discuss briefly the classical wave equation and the traveling waves solutions. 
+The discussion is limited to the issues that will be needed section 6.
+\subsection{Harmonic wave solves wave equation}
+The classical one-dimensional harmonic wave $\Psi(x, t)$ is described by function:
+\begin{equation}
+\label{harm_wave_eqn}
+\Psi(x, t) = A \cos (kx - \omega t) = A \sin (kx - \omega t + \frac{\pi}{2})
+\end{equation}
+Importantly, this function satisfies the classical wave equation:
+\begin{equation}
+\label{the_wave_equation}
+\frac{\partial^2 \Psi(x,t)}{\partial t^2} = v^2 \frac{\partial^2 \Psi(x, t)}{\partial x^2}
+\end{equation}
+This can be easily verified by substitution of the partial dervatives of \eqref{harm_wave_eqn} - I list them here explicitly as they will turn out to be useful at a later time:
+
+\begin{eqnarray}
+\partial \Psi / \partial t &=& \omega A \sin (kx - \omega t) \\
+\partial^2 \Psi / \partial t^2 &=& - \omega^2 A \cos (kx - \omega t) = -\omega^2 \Psi \\
+\partial \Psi / \partial x &=& -k A \sin (kx - \omega t) \\
+\label{psi_2nd_der_x}
+\partial^2 \Psi / \partial x^2 &=& -k^2 A \cos (kx - \omega t) = -k^2 \Psi
+\end{eqnarray}
+
+\subsection{Physical motivation of harmonic wave equation}
+Let us now turn to providing intuitive physical rationale for the harmonic wave \eqref{harm_wave_eqn}. 
+\\ \indent Suppose you want to construct a sinusoid that is
+ moving to the right with the passage of time. Hence, quite clearly, we need a function of both: time $t$ and space - represented here by the single dimension $x$.
+Let's fix time $t$. We want our function to be a sinusoid in the single spatial dimension $x$. So let's just make $f_1(x)$:
+\begin{equation}
+f_1(x) = A \cos(ax)
+\end{equation} 
+Additionally, in line with our physical intuition, we want the distance between consecutive maxima of the function to be equal $\lambda$. Therefore, $f_1$ has maxima at the following points:
+$$ a z \lambda = 2 \pi z $$
+with $z \in \mathbb{Z}$, so that:
+$$ a = \frac{2\pi}{\lambda}$$ 
+The constant $a$ is ratio of radians to the length of the wave and is traditionally called wavenumber and denoted $k$ - cf. section 3. Hence, we have:
+$$ f_1(x) = A \cos (kx) $$
+\\ \indent Now is the time to add time to the picture, to wit.
+What can be done now to make the wave travel to the right? 
+\\ \indent
+Let's fall back to the basics for a while. Translation of the plot of $f_1$ to the right by $\Delta$ is plot of function $f_2 = f_2(x)$\footnote{I am deliberately conflating the mathamatical concept of \textit{function} and
+\textit{plot of function} here. Please recall that these are two diffeent entities: the former is a certain relation whereas the latter is a subset of a certain Cartesian product. }:
+$$ f_2(x) = f_1(x - \Delta x) $$
+In my case, $\Delta x = vt$ since I want the wave to travel to the right with 
+constant speed $v$, so $\Delta x = vt$ is the distance covered by the wave in
+ time $t$. Substituting, I obtain function of both $x$ and $t$:
+\begin{equation*}
+f_2(x - \Delta x) = f_2(x - vt) = \Psi(x, t)
+\end{equation*}
+Where:
+\begin{equation*}
+\Psi(x, t) = A \cos \left( k(x - vt)\right) = A \cos(kx - \omega t)
+\end{equation*}
+with $\omega = 2 \pi / T$. This is equation \eqref{harm_wave_eqn}.
+\\ \indent The crucial point here is that the equation has been arrived at by 
+cautiosly \textit{forcing} it to exhibit certain caractersitics. These characteristics have 
+been chosen to make the resulting function correspond to the human intuition 
+about (perfect) waves. Notice: this is quite different from  derivation 
+of the wave traveling wave function as a solution of a partial differential equation with some boundary conditions.
+
+\subsection{Linearity of the wave equation}
+Consider again the wave equation \eqref{the_wave_equation}:
+\begin{equation*}
+\frac{\partial^2 \Psi}{\partial t^2} = 
+v^2 \frac{\partial^2 \Psi}{\partial x^2}
+\end{equation*}
+Putting all the terms on the LHS and dividing by $v^2$:
+\begin{equation*}
+\left( \frac{1}{v^2} \frac{\partial^2}{\partial t^2} - 
+\frac{\partial^2}{\partial x^2} \right) \Psi = 0 
+\end{equation*}
+
+The expression:
+\begin{equation*}
+\frac{1}{v^2} \frac{\partial^2}{\partial t^2} - 
+\frac{\partial^2}{\partial x^2}
+\end{equation*}
+
+is used to define the differential operator $\Box$, also known as d'Alembertian:
+\begin{equation*}
+\Box :=
+\frac{1}{v^2} \frac{\partial^2}{\partial t^2} - 
+\frac{\partial^2}{\partial x^2}
+\end{equation*}
+
+Which allows us to write the wave equation in a more succint form:
+\begin{equation*}
+\Box \Psi = 0
+\end{equation*}
+
+Consider two distinct solutions of the wave equation $\Psi_1$ and $\Psi_2$:
+\begin{equation*}
+\begin{cases}
+\partial^2 \Psi_1 / \partial t^2 = 
+v^2 \partial^2 \Psi_1 / \partial x^2 \\
+\partial^2 \Psi_2 / \partial t^2 = 
+v^2 \partial^2 \Psi_2 / \partial x^2
+\end{cases}
+\end{equation*}
+
+
+Multiplying these equations by $c_1$ and $c_2$ respectively and adding them yields:
+\begin{equation*}
+c_1 \frac{\partial^2 \Psi_1 }{\partial t^2} +
+c_2 \frac{\partial^2 \Psi_2 }{\partial t^2}
+=
+c_1 v^2 \frac{\partial^2 \Psi_1}{\partial x^2} + 
+c_2 v^2 \frac{\partial^2 \Psi_2}{\partial x^2}
+\end{equation*}
+
+So that:
+\begin{equation*}
+\frac{\partial^2}{\partial t^2} 
+\left(
+c_1 \Psi_1 + c_2 \Psi_2
+\right)
+=
+v^2 \frac{\partial^2}{\partial x^2}
+\left(
+c_1 \Psi_1 + c_2 \Psi_2
+\right)
+\end{equation*}
+
+and we see that the wave equation is linear in the sense that linear combination of its solution is also a solution.
+
+
+\subsection{Sines and cosines}
+\label{sines_and_cosines}
+So far only sinusoidal waves have been considered - cf. \eqref{harm_wave_eqn}:
+\begin{equation*}
+\Psi_1(x, t) = \cos (kx - \omega t)
+\end{equation*}
+It is easy to verify that sinusoidal wave also satisfies the wave equation:
+\begin{equation*}
+\Psi_2(x, t) = \sin(kx - \omega t)
+\end{equation*}
+Due to the linearity of the wave equation, the linear combination of $\Psi_1$ and $\Psi_2$ is also a solution of the wave equation:
+\begin{equation}
+\label{linear_combination_waves}
+\Psi(x, t) = \gamma \cos (kx - \omega t) + \delta \sin (kx - \omega t)
+\end{equation}
+with $\gamma, \delta \in \mathbb{C}$. This will be of great importance later on.
+
+
+
+\section{Pulling a rabbit out of a cylinder}
+This section is the core of our peregrinations. The set of facts 
+presented in the preceding sections will now be used to grapple with the problem of a missing wave equation that would describe the behavior of 
+particles in a manner consistent with the observed duality.
+
+\subsection{Assumption - constant potential}
+Please recall that Planck relation and de Broglie's equation were mixed
+and yielded the equation \eqref{energy_eqtn_qm} which I repeat here for convenience:
+\begin{equation*}
+\hbar \omega = \frac{\hbar^2 k^2}{2m} + V(x, t)
+\end{equation*}
+
+\indent Now, in general one should always attack a complex problem by considering the simplest case first. So let's suppose that no 
+forces are acting on the particle that we want the wave equation for. 
+\\ \indent This means that particle's potential is constant: force is derivative of 
+ potential w.r.t. position $x$, so if $V(x, t) = V_0$, then $F = -dV/dx = 0$. 
+ Note that this matches the postulate 4 of section \ref{postulates}! 
+ So we are led to 
+ surmise that \textit{maybe} the classical traveling wave solution  \eqref{harm_wave_eqn} will come in handy 
+ here... 
+
+\subsection{Wave equation for a particle}
+So we are looking for a wave equation that the wave function of a particle should satisfy - after all we assumed the duality. 
+\\ \indent Since potential is constant our energy 
+ relationship becomes:
+\begin{equation}
+\label{energy_eqtn_constant_potential}
+\hbar \omega = \frac{\hbar^2 k^2}{2m} + V_0
+\end{equation} 
+
+But there is no wave function in this equation! Let's try to force it into 
+our equation by multiplying both sides of 
+\eqref{energy_eqtn_constant_potential} 
+by $\Psi(x, t)$. We get:
+\begin{equation}
+\label{energy_times_psi}
+\hbar \omega \Psi = \frac{\hbar}{2m}k^2 \Psi + V_0 \Psi
+\end{equation}
+
+On closer inspection, this seems familiar - the partial derivatives of the classical 
+traveling wave function which we considered in section 5 contained the terms $\omega$ and $k^2$:
+\begin{eqnarray}
+\label{associations_constants}
+\partial \Psi / \partial t &=& - \omega A \sin (kx - \omega t) \\
+\nonumber
+\partial^2 \Psi / \partial x^2 &=& -k^2 \Psi
+\end{eqnarray}
+
+It is therefore natural to \textit{associate} the partial derivatives 
+of the wave function $\Psi$ with the constants in the following manner:
+\begin{eqnarray}
+\nonumber
+\partial \Psi / \partial t & \longleftrightarrow & -\omega \\
+\nonumber
+\partial^2 \Psi / \partial x^2 & \longleftrightarrow & -k^2
+\end{eqnarray}
+
+So it feels intuitive now to try to come up with 
+an equation that would contain the partial derivatives $\partial/\partial t$ and 
+$\partial^2 / \partial x^2$ of the wave function $\Psi$. 
+Ideally, we would like to have an equation that would somehow 
+'reproduce' the energy relation \eqref{energy_eqtn_qm} - I will explain what I 
+mean by this briefly. 
+
+
+\subsection{Looking for a nice wave function}
+But how do you come up with a partial differential equation now?
+Let's try to make use of the associations \eqref{associations_constants}.
+\\ \indent Note that LHS of \eqref{energy_eqtn_constant_potential}
+contains $\omega$ term so it seems reasonable to put 
+$\partial \Psi / \partial t$ there. 
+\\ \indent As regards the RHS, the first summand 
+should be product of a constant times $\partial^2 \Psi / \partial x^2$. 
+\\ \indent The term standing by the potential needs no matching so I leave it as is. The result is 
+the following partial differential equation:
+\begin{equation}
+\label{se_postulated_1}
+\alpha \frac{\partial \Psi}{\partial t} = 
+\beta \frac{\partial^2 \Psi}{\partial x^2} + V_0 \Psi
+\end{equation}
+
+
+The constants $\alpha$ and $\beta$ we leave unknown - we need to find them later on.
+The idea - mentioned above - is that we need the partial derivatives 
+of the wave function $\Psi$ to be such 
+that they 'reproduce' the $\Psi$: what is meant by that is that we want the partial 
+derivatives to be of the form  $\gamma \Psi$ where $\gamma$ is a constant - 
+potentially complex. This would allow us to fix the values of $\alpha$ and 
+$\beta$ in the equation above.
+\\ \indent Let's go ahead and substitute \eqref{harm_wave_eqn} into \eqref{se_postulated_1}. We obtain:
+\begin{equation}
+\label{almost_there_equation}
+\alpha \omega A \sin(kx - \omega t) = - \beta k^2 \Psi + V_0 \Psi
+\end{equation}
+
+This looks good but this is still not enough as $\Psi$ does not 'reappear' on the LHS. As a result we can't simplify it on both sides and retrieve the constants $\alpha$ and $\beta$ by making them match the relation \eqref{energy_eqtn_constant_potential}.
+\\ \indent What can we do now, then? Well, let's take stock of the considerations in section 5: how about using a linear combination of sines and cosines as our wave function? As explained in 
+section \ref{sines_and_cosines} such a combination is also a solution of the classical wave equation. 
+\\ \indent If we do use it here, its first derivative will also be a linear combination of 
+sines and cosines, which gives us some hope. Let's take this leap of faith and consider the function:
+\begin{equation*}
+\Psi(x, t) = c_1 \cos (kx - \omega t) +
+c_2 \sin(kx - \omega t)
+\end{equation*}
+The partial derivatives of interest are:
+\begin{eqnarray}
+\nonumber
+\partial \Psi / \partial t &=& 
+c_1 \omega \sin(kx - \omega t) -
+c_2 \omega cos(kx - \omega t) = \\ 
+\nonumber
+&& - \omega \left(
+c_2 \cos(kx - \omega t) - c_1 \sin(kx - \omega t)
+\right) \\
+\nonumber
+\partial \Psi / \partial x &=& - c_1 k \sin (kx - \omega t) + 
+c_2 k \cos (kx - \omega t) \\ 
+\nonumber
+\partial^2 \Psi / \partial x^2 &=& - c_1 k^2 \cos (kx - \omega t) - 
+c_2 k^2 \sin (kx - \omega t) \\ 
+\nonumber
+&=& - k^2 \left(
+ c_1 \cos (kx - \omega t) +
+c_2 \sin (kx - \omega t)
+\right) \\
+\nonumber
+&=& -k^2 \Psi
+\end{eqnarray}
+Clearly, the derivative $\partial \Psi / \partial t$ is not yet in good shape 
+as $\Psi$ does not reapper in it. Let's zoom in and see if we can turn this around. We start with:
+\begin{equation*}
+\partial \Psi / \partial t = -\omega \left(
+c_2 \cos(kx - \omega t) - c_1 \sin(kx - \omega t)
+\right)
+\end{equation*}
+
+We need to make $\Psi$ reappear in this formula. We can choose the constants 
+$c_1, c_2$ freely. Straightforward comparison of coefficients of sines and cosines in the current form of the equation will take us nowhere. But we can 
+multiply by 1! This yields:
+\begin{equation*}
+\partial \Psi / \partial t = - \frac{\omega}{K} \left(
+Kc_2 \cos(kx - \omega t) - Kc_1 \sin(kx - \omega t)
+\right)
+\end{equation*}
+
+Taking ratios of the terms standing by cosine and sine we obtain:
+\begin{eqnarray*}
+\begin{cases}
+c_1 = i c_2 \\ 
+K = i
+\end{cases}
+\end{eqnarray*}
+
+Substituting back into the formula for $\partial \Psi / \partial t$:
+\begin{eqnarray*}
+\nonumber
+\partial \Psi / \partial t &=& - \frac{\omega}{i} \left(
+i c_2 \cos(kx - \omega t) + c_2 \sin(kx - \omega t) 
+\right) \\
+\nonumber 
+&=& i \omega \Psi
+\end{eqnarray*}
+Splendid - we succeeded at getting the partial time derivative to 'reproduce' $\Psi$. To simplify 
+things further I take $c_2 = 1$. 
+\subsection{Reaping what's been sown}
+I started with the energy realtion \eqref{energy_eqtn_qm}:
+\begin{equation*}
+\hbar \omega = \frac{\hbar^2 k^2}{2m} + V_0
+\end{equation*}
+
+and associated the partial differential equation \eqref{se_postulated_1} with it:
+\begin{equation*}
+\alpha \frac{\partial \Psi}{\partial t} = 
+\beta \frac{\partial^2 \Psi}{\partial x^2} + V_0 \Psi
+\end{equation*}
+assuming that potential is constant.
+\\ \indent Note that the PDE above still has the unknown coefficients $\alpha, \beta$. 
+I had said that the way to find them is to come up with a reasonable
+wavefunction $\Psi$ that would - on substitution of its partial derivatives into the equation above - allow us to drop $\Psi$ on both sides and find the values of $\alpha$ and $\beta$ that would match the energy relation. Our wave functions is:
+\begin{equation}
+\Psi (x, t) = 
+i \cos (kx - \omega t) + \sin (kx - \omega t)
+\end{equation}
+Its partial derivatives are:
+\begin{eqnarray*}
+\partial \Psi / \partial t &=& i \omega \Psi \\
+\partial \Psi / \partial x^2 &=& -k^2 \Psi
+\end{eqnarray*}
+
+Plugging these into our PDE yields:
+\begin{equation*}
+\alpha i \omega \Psi = - \beta k^2 \Psi + V_0 \Psi
+\end{equation*}
+
+Dropping $\Psi$:
+\begin{equation}
+\label{eqn_dropped_psi}
+\alpha i \omega = - \beta k^2 + V_0
+\end{equation}
+
+From \eqref{eqn_dropped_psi} and \eqref{se_postulated_1} I retrieve the values of $\alpha$ and 
+$\beta$:
+\begin{eqnarray*}
+\begin{cases}
+\alpha = - i \hbar \\
+\beta = \frac{\hbar^2}{2m}
+\end{cases}
+\end{eqnarray*}
+
+So that the PDE \eqref{se_postulated_1} becomes:
+\begin{equation*}
+- i \hbar \frac{\partial \Psi}{\partial t} = 
+\frac{\hbar^2}{2m} \frac{\partial^2 \Psi}{\partial x^2} + V_0 \Psi
+\end{equation*}
+
+I multiply both signs by -1 (this makes not difference 
+for the potential since it is a constant so I just rename $V_0$ as $V_0$) to obtain the final version of the wave equation for a particle under constant potential:
+\begin{equation}
+\label{se_constant_potential}
+i \hbar \frac{\partial \Psi}{\partial t} = 
+- \frac{\hbar^2}{2m} \frac{\partial^2 \Psi}{\partial x^2} + V_0 \Psi
+\end{equation}
+
+\section{Postulating the equation}
+The equation \eqref{se_constant_potential} arrived at in previous section was
+obtained under the assumption of constant potential.
+The crucial step is to take the leap of faith now and to \textit{postulate} that
+\textit{analogous} equation should work for other potentials and various particles. Writing out fully all dependencies it is postulated that the following wave equation - the Schrodinger equation - describes a single particle in one-dimensional space:
+\begin{equation}
+\label{schrodinger_equation_1dim}
+i \hbar \frac{\partial \Psi(x, t)}{\partial t} = 
+- \frac{\hbar^2}{2m} \frac{\partial^2 \Psi(x, t)}{\partial x^2} + V(x, t) \Psi(x, t)
+\end{equation}
+
+This is a crucial step - it has to be borne in mind that it is 
+\textit{not} proved \textit{mathematically} that this equation does indeed describe all particles in all arbitrary potentials - there is just no way we could do this! It is just \textit{assumed} that the equation works - in other words we take it to be an axiom of out framework. 
+Having done this, implications of this axiom are analyzed and predictions are formulated. In the end it is experiment that verifies the correctness of the model's predictions.
+
+
+\section{Concluding remarks}
+I think that it is instructive to conclude by reviewing the process of arriving at the Schrdinger equation to better understand how physics works.
+\\ \indent Firstly, the considerations were spurred by observations of wave-like behavior of micro particles. This had been puzzling when first come across by scientists.
+\\ \indent Secondly, a bold idea was put forward - that of wave-particle duality. This is all the more important, since such an idea stood against the prevailing paradigm at the time (early 20th century). It is therefore justified to say that the idea was revolutionary indeed at that time.
+\\ \indent Thirdly, the idea got 'translated into equations'. This is a crucial step. It is very much like solving a puzzle. We see particles exhibit wavelike behavior. We see them abiding certain relations (Planck relation, de Broglie equation). So if they do act like waves, maybe we can find a wave equation for them? Let's try...
+\\ \indent This last step is not very similar to how things work in mathematics. In mathematics we start by making assumptions explicitly and then just analyze what stems from them. We do not really care whether the model we build corresponds to something real.
+\\ \indent This is clearly not how things work in physics. As we could see, the key step here is to come up with the right set of 'axioms' that are consistent with observations. But this is not enough: we need to $guess$ what is happening 'behind the curtain' to get \textit{good} axioms for our model. In the case at hand, we faced particles exhibit certain wavelike features. We took this fact, thought hard about the topic and arrived at the equation \eqref{schrodinger_equation_1dim} which seems to be consistent with what we had known - at least ih the specific case we looked at. 
+\\ \indent But this is only the beginning! The proposed equation has to - in the good sense - $transcend$ the observed facts. For what quantum mechanics does is investigation of the implications of the equation \eqref{schrodinger_equation_1dim}. Ideally, we want the equation to tell us something new - that is, to allow us to make a prediction. Then - ideally - we would be able to take this prediction and verify it. In the end, experiment decides whether our idea - equation \eqref{schrodinger_equation_1dim} - is true or not.
+\\ \indent Physicist's work seems hard indeed.
+
+\bibliography{general_bibliography}
+\bibliographystyle{plabbrv}
+
+\end{document}
+
