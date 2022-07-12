@@ -1,0 +1,280 @@
+\documentclass[12pt]{article}
+
+%\usepackage[polish]{babel}
+\usepackage[utf8]{inputenc}
+%\usepackage{polski}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[hyphens]{url}
+\usepackage{hyperref}  
+
+% package for writing nice vectors
+\usepackage[arrowdel]{physics}
+
+% package for writing multiple equations side by side with single 
+% \begin{equation and \end{equation}
+\usepackage{tabularx}
+
+% arrows definitions
+\makeatletter
+\newcommand\xleftrightarrow[2][]{%
+  \ext@arrow 9999{\longleftrightarrowfill@}{#1}{#2}}
+\newcommand\longleftrightarrowfill@{%
+  \arrowfill@\leftarrow\relbar\rightarrow}
+\makeatother
+
+\begin{document}
+\title{Coordinate Systems Revision. \\ Part 1: Intoduction \& Polar Coordinates}
+\author{Artur Wegrzyn}
+\date{Last edited: 10.07.2022}
+\maketitle
+
+\abstract{In this note I walk through the three most common non-Cartesian coordinates systems for $\mathbb{R}$ in physics. For every system I deriv}
+
+\tableofcontents
+
+
+
+\section{Basics of $\mathbb{R}^3$}
+Consider 3-dimensional Cartesian space $\mathbb{R}^3 = \mathbb{R} \times \mathbb{R} \times \mathbb{R}$. Let $P = (x, y, z)$ be any point in $\mathbb{R}^3$.
+\\ \indent Let $\textbf{r}$ denote a vector that goes from the origin 
+$(0, 0, 0)$ to $P$ - so called position vector:
+\begin{equation}
+\label{position_vector_1}
+\va{r} = 
+\begin{bmatrix}
+x \\ y \\ z
+\end{bmatrix}
+\end{equation}
+
+The canonical basis of $\mathbb{R}^3$ is given by three vectors $\vu{x}$, $\vu{y}$ and $\vu{z}$, also denoted $\va{e}_1, \va{e}_2, \va{e}_3$ later on in this text\footnote{The notation used will vary depending on the context. }
+
+\begin{tabularx}{\linewidth}{@{}XX@{}XX@{}}
+\begin{equation*}
+\vu{x} = \va{e}_1 = 
+\begin{bmatrix}
+1 \\ 0 \\ 0
+\end{bmatrix}
+\end{equation*}
+&
+\begin{equation*}
+\vu{y} = \va{e}_2 =  
+\begin{bmatrix}
+0 \\ 1 \\ 0
+\end{bmatrix}
+\end{equation*} 
+&
+\begin{equation*}
+\vu{z} =  \va{e}_3 = 
+\begin{bmatrix}
+0 \\ 0 \\ 1
+\end{bmatrix}
+\end{equation*}
+\end{tabularx}
+
+\noindent
+Alternatively, position vector \eqref{position_vector_1} can be written as:
+\begin{equation*}
+\vu{r} = \begin{bmatrix}
+x_1 \\ x_2 \\ x_3
+\end{bmatrix}
+\end{equation*}
+
+\noindent
+So that it can be written as the following sum:
+\begin{equation*}
+\va{r} = \sum_{i = 1}^{3} x_i \va{e}_i
+\end{equation*}
+
+
+\section{Gradient of function from $\mathbb{R}^3$ into $\mathbb{R}$}
+Consider a function $f=f(x,y,z)$ such that $f: \mathbb{R}^3 \rightarrow \mathbb{R}$. Assume that $f$ is $C^2$ for all of its partial derivatives.
+\\ \indent Gradient of $f$ is denoted $\grad f$ it is defined as:
+\begin{equation}
+\grad f = \begin{bmatrix}
+\partial f / \partial x \\
+\partial f / \partial y \\
+\partial f / \partial z \\
+\end{bmatrix} = 
+\begin{bmatrix}
+f_x \\ f_y \\ f_z
+\end{bmatrix}
+\end{equation}
+This can be rewritten using the basis ${\vu{x}, \vu{y}, \vu{z}}$ as:\begin{equation*}
+\grad f = \vu{x} f_x + \vu{y} f_y + \vu{z} f_z
+\end{equation*}
+Del operator $\grad$ is:
+\begin{equation}
+\grad =
+\begin{bmatrix}
+\frac{\partial}{\partial x} \\
+\frac{\partial}{\partial y} \\
+\frac{\partial}{\partial z}
+\end{bmatrix} = \vu{x} \frac{\partial}{\partial x} + 
+\vu{y} \frac{\partial}{\partial y} + 
+\vu{z} \frac{\partial}{\partial z}
+\end{equation}
+
+
+\section{Kronecker Delta and Levi-Civita Symbol}
+Kronecker delta is defined as:
+\begin{equation}
+\label{kronecker_delta_definition}
+\delta_{ij} = 
+\begin{cases}
+1, & \text{if}\ i = j \\
+0 & \text{if}\ i \neq j
+\end{cases}
+\end{equation}
+where $i, j$ are members of a set $S$. Here $S = \mathbb{N}$.
+\\ \indent As I am working with the space $\mathbb{R}^3$ here, I am only
+concerned with the three-dimensional version of the Levi-Civita symbol.
+It is given by:
+\begin{equation}
+\label{levi_civita_symbol_definition}
+\epsilon_{ijk} = 
+\begin{cases}
++1, & \text{if}\ (i, j, k)\ \text{is an even permutation of the set}\ \{1, 2, 3\} \\
+-1, & \text{if}\ (i, j, k)\ \text{is an odd permutation of the set}\ \{1, 2, 3\} \\
+0, & \text{otherwise}
+\end{cases}
+\end{equation}
+For background on even and odd permutations consult any book on elementary
+algebra (e.g. \cite{algebra1_kostrikin}, \cite{hungerford_algebra} or
+\cite{pinter_abstract_algebra}).
+
+
+\section{Vector product}
+Let $\va{u}$ and $\va{v}$ be vectors in $\mathbb{R}^3$: 
+
+\noindent
+\begin{tabularx}{\linewidth}{@{}XX@{}XX@{}}
+\begin{equation*}
+\va{u} = 
+\begin{bmatrix}
+u_1 \\ u_2 \\ u_3
+\end{bmatrix}
+\end{equation*}
+&
+\begin{equation*}
+\va{v} = 
+\begin{bmatrix}
+v_1 \\ v_2 \\ v_3
+\end{bmatrix}
+\end{equation*} 
+\end{tabularx}
+
+Then, the vector product of $\va{u}$ and $\va{v}$ is defined to be the following determinant:
+\begin{equation}
+\va{u} \times \va{v} = 
+\begin{vmatrix}
+\vu{x} & \vu{y} & \vu{z} \\
+u_1 & u_2 & u_3 \\
+v_1 & v_2 & v_3
+\end{vmatrix} 
+\end{equation}
+
+\noindent
+Hence:
+\begin{equation}
+\va{u} \times \va{v} = 
+\vu{x} (u_2 v_3 - u_3 v_2) +
+\vu{y} (u_1 v_3 - u_3 v_1) +
+\vu{z} (u_1 v_2 - u_2 v_1)
+\end{equation}
+
+\noindent
+Notice that this can be written succintly using the Levi-Civita symbol:
+\begin{equation*}
+\va{u} \times \va{y} = \sum_{i,j,k=1}^{3} \epsilon_{ijk}u_jv_k
+\end{equation*}
+
+\noindent Dropping the summation sign (Einstein notation - implicit summation):
+\begin{equation*}
+\va{u} \times \va{y} = \epsilon_{ijk}u_jv_k
+\end{equation*}
+
+\section{Vector field on $\mathbb{R}^3$}
+Vector field on $\mathbb{R}$ is a function that assigns a vector to every point 
+of the space $\mathbb{R}^3$. Let $\va{F} = \va{F}(x, y, z)$ be a vector field 
+$\va{F}: \mathbb{R}^3 \rightarrow \mathbb{R}^3$:
+\begin{equation*}
+\va{F}(x, y, z) = 
+\begin{bmatrix}
+F_x(x, y, z) \\
+F_y(x, y, z) \\
+F_z(x, y, z)
+\end{bmatrix} =
+\vu{x} F_x(x, y, z) + \vu{y} F_y(x, y, z) + \vu{z} F_z(x, y, z)
+\end{equation*}
+Assume that the functions $F_x, F_y, F_z$ are all $C^2$ for all of 
+their coordinates.
+\section{Divergence, Curl and Laplacian}
+Recall the definitions:
+\begin{equation}
+\div \va{F} = 
+\frac{\partial F_x}{\partial x} + 
+\frac{\partial F_y}{\partial y} + 
+\frac{\partial F_z}{\partial z}
+\end{equation}
+which is to say that divergence of vector field $\va{F}$ is a scalar product of 
+del operator and the vector field.
+\\ \indent Curl of a vector field $\va{F}$ is defined to be a vector product of del operator and field:
+\begin{equation*}
+\grad \times \va{F} = 
+\begin{vmatrix}
+\vu{x} & \vu{y} & \vu{z} \\
+\frac{\partial}{\partial x} & \frac{\partial}{\partial y} & 
+\frac{\partial}{\partial z} \\
+F_x & F_y & F_z
+\end{vmatrix} = 
+\epsilon_{ijk} \va{e}_i \frac{\partial}{\partial x_j} F_k
+\end{equation*}
+
+
+\section{Polar Coordinates}
+In this section I am looking at trasnformation of $\mathbb{R}^2$ onto itself.
+Let $\va{r}$ be a vector in $\mathbb{R}^2$:
+\begin{equation}
+\va{r} = \begin{bmatrix}
+x \\ y
+\end{bmatrix} = 
+\vu{x}x + \vu{y}y
+\end{equation}
+
+\noindent
+Consider the following transformation of the \textbf{coordinates} $x$ and $y$ of the 
+vector $\va{r}$:
+\begin{equation}
+\label{polar_coors_transform}
+	\begin{cases}
+		r(x,y) &= \sqrt{x^2 + y^2} \\
+		\theta (x, y) & \arccos (x / \sqrt{x^2+ y^2})
+	\end{cases}
+\end{equation}
+
+Unsurprisingly, the inverse transformation is:
+\begin{equation}
+\label{polar_coors_inv_transform}
+	\begin{cases}
+		x(r, \theta) = r \cos \theta \\
+		y(r, \theta) = r \sin \theta
+	\end{cases}
+\end{equation}
+
+\subsection{Unit Vectors}
+\subsection{Gradient in Polar Coordinates}
+\subsubsection{Derivation}
+\subsubsection{Example}
+\subsection{Divergence}
+\subsubsection{Derivation}
+\subsubsection{Example}
+\subsection{Rotation}
+\subsubsection{Derivation}
+\subsubsection{Example}
+
+
+\bibliography{general_bibliography}
+\bibliographystyle{plabbrv}
+\end{document}
+
